@@ -3,10 +3,14 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 function App() {
+  
+  //! It allows functional components to extract and access data from the Redux store's state.
   const counter = useSelector((state) => state.count);
   const dispatch = useDispatch();
 
+  // actions creators
   const increment = () => {
+    //! dispatch is use for send action
     dispatch({ type: "increment" });
   };
   const decrement = () => {
