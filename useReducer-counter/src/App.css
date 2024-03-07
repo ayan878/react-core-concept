@@ -34,9 +34,17 @@
 }
 
 .card {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
   padding: 2em;
 }
-
+h2:hover{
+  width: 48px;
+  border: 1px solid #888;
+  border-radius:  8px; 
+cursor: pointer;
+}
 .read-the-docs {
   color: #888;
 }
