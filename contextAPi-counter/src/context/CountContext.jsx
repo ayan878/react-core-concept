@@ -21,6 +21,7 @@ export const CountProvider = ({ children }) => {
   const reset = () => setCount(0);
 
   return (
+    
     <CountContext.Provider value={{ count, increment, decrement, reset }}>
       {children}
     </CountContext.Provider>
