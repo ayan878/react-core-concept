@@ -1,30 +1,29 @@
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-// Step 1: Import createStore from Redux
-import { createStore } from "redux";
+const initialState = { counter: 0 };
 
-// Initial state
-const initialState = {
-  counter: 0,
-};
+const counterSlice = createSlice({
+  name: "counter",
+  initialState,
+  reducers: {
+    increment(state, action) {
+      state.counter += action.payload;
+    },
+    decrement(state, action) {
+      state.counter -= action.payload;
+    },
+    reset(state) {
+      state.counter = initialState.counter;
+    },
+  },
+});
 
-// Step 3: Create reducer and pass it as an argument to createStore
-const reducer = (state = initialState, action) => {
-    // Limited for reducer function  
-    // function should be synchronous
-    //  we should not mutate the original state
-  switch (action.type) {
-    case "INC":
-      return { ...state, counter: state.counter + action.payload };
-    case "DEC":
-      return { ...state, counter: state.counter - action.payload };
-    case "RESET":
-      return initialState;
-    default:
-      return state;
-  }
-};
+// Extract action creators from the slice
+export const { increment, decrement, reset } = counterSlice.actions;
 
-// Step 2: Create the store using the reducer
-const store = createStore(reducer);
+// Create the Redux store with the slice reducer
+const store = configureStore({
+  reducer: counterSlice.reducer,
+});
 
 export default store;

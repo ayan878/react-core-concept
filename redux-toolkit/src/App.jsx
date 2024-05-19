@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-
+import { increment, decrement, reset } from "../store";
 function App() {
   const counter = useSelector((state) => state.counter);
   const dispatch = useDispatch();
@@ -20,14 +20,9 @@ function App() {
       <h1>Vite + React</h1>
       <h2>{counter}</h2>
       <div className="card">
-        <button onClick={() => dispatch({ type: "INC",payload:1 })}>
-          +
-        </button>
-        <button onClick={() => dispatch({ type: "RESET" })}>
-          RESET
-        </button>
-        <button onClick={() => dispatch({ type: "DEC",payload:1 })}>-
-        </button>
+        <button onClick={() => dispatch(increment(1))}> +</button>
+        <button onClick={() => dispatch(reset())}>RESET</button>
+        <button onClick={() => dispatch(decrement(1))}>-</button>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
