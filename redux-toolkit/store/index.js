@@ -1,6 +1,9 @@
+
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const initialState = { counter: 0 };
+const initialState = {
+  counter: 0,
+};
 
 const counterSlice = createSlice({
   name: "counter",
@@ -13,17 +16,16 @@ const counterSlice = createSlice({
       state.counter -= action.payload;
     },
     reset(state) {
-      state.counter = initialState.counter;
+      state.counter = 0;
     },
   },
 });
 
-// Extract action creators from the slice
-export const { increment, decrement, reset } = counterSlice.actions;
+const { increment, decrement, reset } = counterSlice.actions;
 
-// Create the Redux store with the slice reducer
 const store = configureStore({
   reducer: counterSlice.reducer,
 });
 
+export { increment, decrement, reset };
 export default store;
