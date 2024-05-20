@@ -80,3 +80,4 @@ In this example:
 - The `Counter` component initializes its state in the constructor.
 - The `setCount` method updates the state.
 - The `render` method uses `this.state.count` to display the current count and provides buttons to modify the count.
+
