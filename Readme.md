@@ -193,7 +193,199 @@ function App() {
 
 export default App;
 ```
-### Context API
 
+### Context API in React
+
+The Context API in React allows you to create a context, which can be used to store and share or teleport state or other values across a component tree. This helps avoid the need to pass props through multiple levels of components or overcome the props drilling problem, making state management more centralized and easier to manage.
+
+### How Context API Works
+
+1. **Create a Context**: Use `React.createContext()` to create a context.
+2. **Provider Component**: Use a provider component to wrap parts of your component tree where you want to make the context values available. The provider takes a `value` prop to define the data you want to share.
+3. **Consumer Components**: Use the `useContext` hook in functional components to access the context values.
+
+### Example 1
+
+The issue you're encountering is related to unnecessary re-renders caused by the entire provider value changing on every render. This happens because when the setCount function is called, it causes the parent App component to re-render,
+
+````JavaScript
+import React, { createContext, useContext, useState } from "react";
+import "./App.css";
+
+const CountContext = createContext();
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <main>
+      <CountContext.Provider value={{ count, setCount }}>
+        <Component1 />
+        <Component2 />
+      </CountContext.Provider>
+    </main>
+  );
+}
+
+function Component1() {
+  const { count, setCount } = useContext(CountContext);
+  console.log("Component1 rendering...");
+  return (
+    <div>
+      Component1 <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+function Component2() {
+  console.log("Component2 rendering...");
+  return <div>Component2</div>;
+}
+
+export default App;
+``
+
+### Above Example we encounter the problem which is solve by using children props
+
+ContextProvider.js
+```JavaScript
+import React, { createContext, useState } from "react";
+
+export const CountContext = createContext();
+
+function ContextProvider({ children }) {
+  const [count, setCount] = useState(0);
+
+  return (
+    <CountContext.Provider value={{count,setCount}}>
+      {children}
+    </CountContext.Provider>
+  );
+}
+
+export default ContextProvider;
+````
+
+App.js
+
+````JavaScript
+import React, { useContext } from "react";
+import "./App.css";
+import ContextProvider, { CountContext } from "./ContextProvider";
+
+function App() {
+  return (
+    <main>
+      <ContextProvider>
+        <Component1 />
+        <Component2 />
+      </ContextProvider>
+    </main>
+  );
+}
+
+function Component1() {
+  const { count, setCount } = useContext(CountContext);
+  console.log("Component1 rendering...");
+  return (
+    <div>
+      <p>Component1</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+function Component2() {
+  console.log("Component2 rendering...");
+  return <div>Component2</div>;
+}
+
+export default App;
+
+```
+
+#### Create the Context and Provider
+
+```javascript
+// CounterContext.js
+import { createContext, useState } from "react";
+
+export const CounterContext = createContext();
+
+export function CounterProvider({ children }) {
+  const [count, setCount] = useState(0);
+
+  return (
+    <CounterContext.Provider value={{ count, setCount }}>
+      {children}
+    </CounterContext.Provider>
+  );
+}
+````
+
+#### Use the Context in a Component
+
+```javascript
+// Counter.js
+import React, { useContext } from "react";
+import { CounterContext } from "./CounterContext";
+
+function Counter() {
+  const { count, setCount } = useContext(CounterContext);
+
+  return (
+    <div>
+      <h1>Counter</h1>
+      <h2>{count}</h2>
+      <button onClick={() => setCount(count + 1)}>+</button>
+      <button onClick={() => setCount(0)}>RESET</button>
+      <button onClick={() => setCount(count - 1)}>-</button>
+    </div>
+  );
+}
+
+export default Counter;
+```
+
+#### Use the Provider in the Main Application
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { CounterProvider } from "./CounterContext";
+
+ReactDOM.render(
+  <CounterProvider>
+    <App />
+  </CounterProvider>,
+  document.getElementById("root")
+);
+```
+
+#### Main Application Component
+
+```javascript
+import React from "react";
+import Counter from "./Counter";
+
+function App() {
+  return (
+    <div className="App">
+      <Counter />
+    </div>
+  );
+}
+
+export default App;
+```
+
+### Summary
+
+- **Context API**: Provides a way to pass data through the component tree without having to pass props down manually at every level.
+- **Provider**: Wraps the part of your application where you want the context values to be available.
+- **Consumer**: Uses the `useContext` hook to access context values.
+
+By using the Context API, you centralize state management and simplify the passing of data through your component tree.
 
 ### Redux
