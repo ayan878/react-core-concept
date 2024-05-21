@@ -1,9 +1,10 @@
 import React from "react";
 import "./Auth.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/authSlice";
 
 const Auth = () => {
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login(true))
