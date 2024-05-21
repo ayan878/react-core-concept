@@ -23,8 +23,8 @@ const cartSlice = createSlice({
           id: newItem.id,
           price: newItem.price,
           quantity: 1,
-          totalPrice:newItem.price,
-          name:newItem.name
+          totalPrice: newItem.price,
+          name: newItem.name,
         });
       }
       state.totalQuantity++;
